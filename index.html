@@ -28,7 +28,7 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Distance</th>
+          <th scope="col">Distance (mi)</th>
         </tr>
       </thead>
       <tbody id="resultsTableBody">
@@ -48,8 +48,9 @@
         var fragment = document.createDocumentFragment();
         var tableBody = document.getElementById("resultsTableBody");
         tableBody.innerHTML = "";
+        locations.sort((a,b) => (a.distance > b.distance) ? 1 : -1);
         locations.forEach((location, i) => {
-          createRow(fragment, i, location.name, `${location.long} ${location.lat}`);
+          createRow(fragment, i, location.place, location.distance);
         });
         tableBody.appendChild(fragment);
       }
@@ -61,7 +62,7 @@
         tableHeader.textContent = number;
         tableHeader.scope = "row";
         tableDataName.textContent = name;
-        tableDataDistance.textContent = distance;
+        tableDataDistance.textContent = distance.toFixed(2);
         row.appendChild(tableHeader);
         row.appendChild(tableDataName);
         row.appendChild(tableDataDistance);
