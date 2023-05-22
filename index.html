@@ -15,6 +15,8 @@
         </div>
       </div>
     </nav>
+
+    <# This is the form to enter your address. Notice the onsubmit property below is pointing to handleSubmit function which is defined later #>
     <form class="container px-4 text-center" onsubmit="handleSubmit()">
       <div class="mb-3">
         <label for="addressInput" class="form-label">Address</label>
@@ -22,7 +24,9 @@
         <div id="addressHelp" class="form-text">Enter your address, so we can check for Food Banks close by</div>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </form> 
+
+    <# This is the table to display the results. We have the headings defined, but will add the results to the table when they click the submit button above #>
     <table class="table container px-4 text-center">
       <thead>
         <tr>
@@ -38,9 +42,11 @@
     <script>
       async function handleSubmit() {
         event.preventDefault();
+        // Here we are calling your API code. 
         fetch(`https://arcane-caverns-14036.herokuapp.com?address=${event.target.elements.addressInput.value}`)
         .then(response => response.json())
         .then(data => {
+          // Once we have the response from the API, we will call the displayResults Function
           displayResults(data);
         });
       }
@@ -48,12 +54,15 @@
         var fragment = document.createDocumentFragment();
         var tableBody = document.getElementById("resultsTableBody");
         tableBody.innerHTML = "";
+        // Here is where we sort the data by distance
         locations.sort((a,b) => (a.distance > b.distance) ? 1 : -1);
+        // Here we loop through each location and add it to the table
         locations.forEach((location, i) => {
           createRow(fragment, i, location.place, location.distance);
         });
         tableBody.appendChild(fragment);
       }
+      // This function just creates the row on the page. I'll have to explain how this works in detail some other time
       function createRow(fragment, number, name, distance) {
         var row = document.createElement('tr');
         var tableHeader = document.createElement('th');
